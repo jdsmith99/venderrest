@@ -50,13 +50,41 @@ Employee.prototype = {
 		}
 		employee.update(queryFilter, {credits : req.body.credits}, {multi : true}, function (err, numberAffected) {
 			if (err) {
-				res.send(err);
+				res.send(500, err);
 			}
 			else
 			{
 				res.send(200, {rows : numberAffected});
 			}
 		});
+	},
+
+	activate: function (req, res) {
+		var id = req.params.id;
+		employee.update ({_id : id}, {active : true}, {multi : false}, function (err, numAffected) {
+			if (err) {
+				res.send(500, err);
+			}
+			else
+			{
+				res.send(200, {rows : numAffected});
+			}
+		});
+
+	},
+
+	deactivate: function (req, res) {
+		var id = req.params.id;
+		employee.update ({_id : id}, {active : false}, {multi : false}, function (err, numAffected) {
+			if (err) {
+				res.send(500, err);
+			}
+			else
+			{
+				res.send(200, {rows : numAffected});
+			}
+		});
+
 	},
 
 	getEmployeeById: function (req, res) {

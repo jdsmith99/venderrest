@@ -10,8 +10,8 @@ var port = process.env.PORT || 1337;
 
 var app = express();
 
-var connectionString = "mongodb://venderUser:Mellmen123!@ds059938.mongolab.com:59938/venderprod";
-//var connectionString = process.env.CUSTOMCONNSTR_MONGOLAB_URI;
+//var connectionString = "mongodb://venderUser:Mellmen123!@ds059938.mongolab.com:59938/venderprod";
+var connectionString = process.env.PARAM1;
 //var connectionString = "localhost:27017/test";
 
 var appl = new Application(connectionString);
@@ -29,6 +29,8 @@ app.post("/employees", employee.get);
 app.post("/employees/addCredits", employee.addCredits);
 app.post("/employees/remove", employee.remove);
 app.get("/employees/:id", employee.getEmployeeById);
+app.get("/employees/:id/activate", employee.activate);
+app.get("/employees/:id/deactivate", employee.deactivate);
 
 app.get("/items", item.get);
 app.post("/items", item.get);
