@@ -108,27 +108,6 @@ Employee.prototype = {
 		});
 	},
 
-	getEmployeeByCode: function (req, res) {
-		var id = req.params.id;
-		employee.findById (id, function (err, item) {
-				console.log(item);
-				//res.send(item);
-				var opts = [{path: 'purchases'}];
-				employee.populate(item, opts, function (err, results) {
-					if (err) {
-						res.send(err);
-					}
-					else {
-						console.log("populating purchases");
-						res.send(results);
-					}
-
-
-				});
-
-		});
-	},
-
 	remove: function (req, res) {
 		var queryFilter = null;
 		//console.log("filter" + req.body.filter);

@@ -126,7 +126,7 @@ Purchase.prototype = {
     }
     else
     {
-      console.log(itemQueryParam);
+      //console.log(itemQueryParam);
   		// find item
       var query;
       if(parmItem.code)
@@ -150,7 +150,7 @@ Purchase.prototype = {
             });
   			}
         else if (foundItems.length != 1) {
-            excep.description = "Invalid item or more than one Item matches filter: ";
+            excep.description = "Invalid item or more than one Item matches code/Id.";
             excep.source = functionName + " line: " + stack[0].line;
             excep.save (function (err, newException) {
               if (err){
@@ -190,7 +190,7 @@ Purchase.prototype = {
           }
 
   				// find employee
-  				employee.findById (newEmployee._id, function (err, foundEmployee) {
+  				employee.findOne ({ _id : newEmployee._id, active : true},  function (err, foundEmployee) {
   				if (err) {
             // save exception
             excep.source = functionName + " line: " + stack[0].line;
@@ -201,7 +201,7 @@ Purchase.prototype = {
   					//res.send(403, err);
   				}
           else if(!foundEmployee){
-            excep.description = "Invalid employee: " + parmEmployee._id;
+            excep.description = "Invalid employee or employee not active: " + parmEmployee._id;
             excep.source = functionName + " line: " + stack[0].line;
             excep.save (function (err, newException) {
               res.send(400, newException);
