@@ -27,6 +27,24 @@ Employee.prototype = {
 
 	add: function (req, res) {
 		var parmEmployee = req.body;
+		
+		/*
+		uncomment for batch load
+		parmEmployee.forEach( function saveEmployee(element, index, array) {
+
+				var newEmployee = new employee(element);
+				newEmployee.save(function (err, newEmployee) {
+  					if (err) // TODO handle the error
+  					{
+  						res.send(500, error);
+  					}
+				});
+		});
+
+		res.send(200);
+		
+		return;
+		*/
 		var newEmployee = new employee(parmEmployee);
 		newEmployee.save(function (err, newEmployee) {
   				if (err) // TODO handle the error
