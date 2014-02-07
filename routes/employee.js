@@ -58,6 +58,39 @@ Employee.prototype = {
 			});
 	},
 
+	update: function (req, res) {
+
+		var parmEmployee = req.body;
+		var parmId = parmEmployee._id
+		var newEmployee = employee(parmEmployee);
+
+		//console.log("body: " + newEmployee);
+		//console.log("id: " + parmId);
+		employee.findById (parmId, function (err, employee) {
+			if (err) {
+				res.send(500, err)
+				return;
+			}
+			//console.log(newEmployee);
+			//console.log(employee);
+			if (newEmployee.name != null) employee.name = newEmployee.name;
+			if (newEmployee.employeeCode != null) employee.employeeCode = newEmployee.employeeCode;
+			if (newEmployee.employeeId != null) employee.employeeId = newEmployee.employeeId;
+			if (newEmployee.note != null) employee.note = newEmployee.note;
+			//if (newEmployee.credits != null) employee.credits = newEmployee.credits;
+			//if (newEmployee.active != null)	employee.active = newEmployee.active;
+			if (newEmployee.dailyLimit != null) employee.dailyLimit = newEmployee.dailyLimit;
+			employee.save ( function (err, updatedEmployee){
+				if (err) {
+					res.send(500, err)
+					return;
+				}
+
+				res.send(200, updatedEmployee);
+			});
+		});
+	},
+
 	addCredits: function (req, res) {
 		var queryFilter = null;
 		//console.log("filter" + req.body.filter);
