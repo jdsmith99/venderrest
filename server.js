@@ -36,7 +36,7 @@ app.get("/employees/:id/deactivate", employee.deactivate);
 app.get("/items", item.get);
 app.post("/items", item.get);
 app.post("/items/add", item.add);
-app.put("/items/:id", item.update);
+app.put("/items", item.update);
 app.get("/items/:id", item.getItemById);
 app.get("/items/:id/activate", item.activate);
 app.get("/items/:id/deactivate", item.deactivate);
