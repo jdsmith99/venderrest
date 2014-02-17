@@ -11,7 +11,7 @@ var port = process.env.PORT || 1337;
 
 var app = express();
 
-var connectionString = "mongodb://venderUser:Mellmen123!@ds059938.mongolab.com:59938/venderprod";
+var connectionString = process.env.PARAM1 || "mongodb://venderUser:Mellmen123!@ds059938.mongolab.com:59938/venderprod";
 //var connectionString = process.env.PARAM1;
 //var connectionString = "localhost:27017/drywall";
 
