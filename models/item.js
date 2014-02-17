@@ -11,9 +11,19 @@ var ItemSchema = new Schema ({
 	name : String,
 	description : String,
 	code : String,
-	cost : {type: Number, default : 1},
+	cost : Number,
 	active : {type : Boolean, default : false},
-	ratings : [ItemRatingSchema]
+	weight : Number,
+	calories : Number,
+	glutenFree : Boolean,
+	lowSugar : Boolean,
+	nutFree : Boolean,
+	highFiber : Boolean,
+	organic : Boolean,
+	kosher : Boolean,
+	vegan : Boolean,
+	ratings : [ItemRatingSchema],
+	imageUri : String
 });
 
 module.exports = mongoose.model("ItemRating", ItemRatingSchema);

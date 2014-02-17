@@ -62,6 +62,7 @@ Item.prototype = {
 			if (newItem.organic != null) item.organic = newItem.organic;
 			if (newItem.kosher != null) item.kosher = newItem.kosher;
 			if (newItem.vegan != null) item.vegan = newItem.vegan;
+			if (newItem.imageUri != null) item.imageUri = newItem.imageUri;
 			item.save ( function (err, updatedItem){
 				if (err) {
 					res.send(500, err)

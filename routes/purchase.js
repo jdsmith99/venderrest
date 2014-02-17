@@ -1,6 +1,7 @@
 var mongoose = require("mongoose"),
 	purchase = require("../models/purchase.js"),
-	employee = require("../models/employee.js"),
+  employee = require("../models/employee.js"),
+	account = require("../models/account.js"),
 	item = require("../models/item.js"),
   exception = require("../models/exception.js"),
   traceback = require('traceback');
@@ -93,8 +94,8 @@ Purchase.prototype = {
   },
 
 	add: function (req, res) {
-		var parmEmployee = req.body.employee;
-		var newEmployee = new employee(parmEmployee);
+		var parmEmployee = req.body.account;
+		var newEmployee = new account(parmEmployee);
 		var parmItem = req.body.item;
 		var newItem = new item(parmItem);
     var excep = new exception();
@@ -174,7 +175,7 @@ Purchase.prototype = {
 
             stack = traceback();
             excep.source = functionName + " line: " + stack[0].line;
-            excep.description = "Must provide an employee entity.";
+            excep.description = "Must include an account entity.";
             excep.save (function (err, newException) {
               if(err)
               {
@@ -189,8 +190,8 @@ Purchase.prototype = {
             return;
           }
 
-  				// find employee
-  				employee.findOne ({ _id : newEmployee._id, active : true},  function (err, foundEmployee) {
+  				// find account
+  				account.findOne ({ _id : parmEmployee._id, isActive : 'yes'},  function (err, foundEmployee) {
   				if (err) {
             // save exception
             excep.source = functionName + " line: " + stack[0].line;
@@ -221,7 +222,7 @@ Purchase.prototype = {
   							//.setMinutes(-topDateRange.getMinutes());
   						//console.log(topDateRange);
   						//console.log(botDateRange);
-  						purchase.count({employee: foundEmployee, purchaseDate: {$lte : topDateRange}, purchaseDate: {$gte: botDateRange}}, function (err, count) {
+  						purchase.count({account: foundEmployee, purchaseDate: {$lte : topDateRange}, purchaseDate: {$gte: botDateRange}}, function (err, count) {
   						//purchase.count({employee: foundEmployee}, function (err, count) {
   							if(err) {
   								excep.source = functionName + " line: " + stack[0].line;
@@ -247,7 +248,7 @@ Purchase.prototype = {
   							else {
   									// save purchase
   									var newPurchase = new purchase();
-  									newPurchase.employee = foundEmployee._id;
+  									newPurchase.account = foundEmployee._id;
   									newPurchase.item = foundItem._id;
   									newPurchase.amount = foundItem.cost;
   									newPurchase.save(function (err, newPurchase) {

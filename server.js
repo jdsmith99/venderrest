@@ -2,6 +2,7 @@ var express = require('express'),
 	//wines = require('./routes/wine'),
 	utils = require('./routes/util'),
 	Employee = require("./routes/employee"),
+	Account = require("./routes/account"),
 	Item = require("./routes/item"),
 	Purchase = require("./routes/purchase"),
 	Exception = require("./routes/exception"),
@@ -12,10 +13,11 @@ var app = express();
 
 var connectionString = "mongodb://venderUser:Mellmen123!@ds059938.mongolab.com:59938/venderprod";
 //var connectionString = process.env.PARAM1;
-//var connectionString = "localhost:27017/test";
+//var connectionString = "localhost:27017/drywall";
 
 var appl = new Application(connectionString);
 var employee = new Employee(connectionString);
+var account = new Account(connectionString);
 var item = new Item(connectionString);
 var purchase = new Purchase(connectionString);
 var exception = new Exception(connectionString);
@@ -23,15 +25,24 @@ var exception = new Exception(connectionString);
 app.use(express.bodyParser());
 app.get("/util/getPort", utils.getPort);
 
-app.post("/employees/add", employee.add);
-app.get("/employees", employee.get);
-app.post("/employees", employee.get);
-app.put("/employees", employee.update);
-app.post("/employees/addCredits", employee.addCredits);
-app.post("/employees/remove", employee.remove);
-app.get("/employees/:id", employee.getEmployeeById);
-app.get("/employees/:id/activate", employee.activate);
-app.get("/employees/:id/deactivate", employee.deactivate);
+//app.post("/employees/add", employee.add);
+//app.get("/employees", employee.get);
+//app.post("/employees", employee.get);
+//app.put("/employees", employee.update);
+//app.post("/employees/addCredits", employee.addCredits);
+//app.post("/employees/remove", employee.remove);
+//app.get("/employees/:id", employee.getEmployeeById);
+//app.get("/employees/:id/activate", employee.activate);
+//app.get("/employees/:id/deactivate", employee.deactivate);
+
+app.post("/accounts/add", account.add);
+app.get("/accounts", account.get);
+app.post("/accounts", account.get);
+app.post("/accounts/addCredits", account.addCredits);
+app.post("/accounts/remove", account.remove);
+app.get("/accounts/:id", account.getAccountById);
+app.get("/accounts/:id/activate", account.activate);
+app.get("/accounts/:id/deactivate", account.deactivate);
 
 app.get("/items", item.get);
 app.post("/items", item.get);

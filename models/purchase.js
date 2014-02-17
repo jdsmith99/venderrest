@@ -3,7 +3,7 @@ var mongoose = require("mongoose"),
 
 var PurchaseSchema = new Schema({
 	item : {type: Schema.Types.ObjectId, ref: 'Item'},
-	employee : {type : Schema.Types.ObjectId, ref : 'Employee'},
+	account : {type : Schema.Types.ObjectId, ref : 'Account'},
 	amount : Number,
 	purchaseDate : {type : Date, default : Date.now}
 });
