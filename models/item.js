@@ -12,6 +12,7 @@ var ItemSchema = new Schema ({
 	description : String,
 	code : String,
 	cost : Number,
+	order : Number,
 	active : { type: String, default : 'no'},
 	weight : Number,
 	calories : Number,
