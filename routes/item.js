@@ -76,7 +76,7 @@ Item.prototype = {
 
 	activate: function (req, res) {
 		var id = req.params.id;
-		item.update ({_id : id}, {active : true}, {multi : false}, function (err, numAffected) {
+		item.update ({_id : id}, {active : 'yes'}, {multi : false}, function (err, numAffected) {
 			if (err) {
 				res.send(500, err);
 			}
@@ -90,7 +90,7 @@ Item.prototype = {
 
 	deactivate: function (req, res) {
 		var id = req.params.id;
-		item.update ({_id : id}, {active : false}, {multi : false}, function (err, numAffected) {
+		item.update ({_id : id}, {active : 'no'}, {multi : false}, function (err, numAffected) {
 			if (err) {
 				res.send(500, err);
 			}

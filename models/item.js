@@ -12,7 +12,7 @@ var ItemSchema = new Schema ({
 	description : String,
 	code : String,
 	cost : Number,
-	active : {type : Boolean, default : false},
+	active : { type: String, default : 'no'},
 	weight : Number,
 	calories : Number,
 	glutenFree : Boolean,

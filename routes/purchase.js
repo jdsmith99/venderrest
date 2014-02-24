@@ -132,11 +132,11 @@ Purchase.prototype = {
       var query;
       if(parmItem.code)
       {
-          query =  item.find({code : newItem.code, active : true});
+          query =  item.find({code : newItem.code, active : 'yes'});
       }
       else
       {
-          query =  item.find({_id : newItem._id, active : true});
+          query =  item.find({_id : newItem._id, active : 'yes'});
 
       }
 
