@@ -168,7 +168,7 @@ Purchase.prototype = {
         }
   			else
   			{
-          var foundItem = new item(foundItems[0]);
+          var foundItem = foundItems[0];
 
           if(!parmEmployee)
           {
@@ -260,6 +260,7 @@ Purchase.prototype = {
                           }); 
   									  	}
   									  	else {
+                          // save employee record
   									  		foundEmployee.purchases.push(newPurchase);
   								  			foundEmployee.credits = foundEmployee.credits - foundItem.cost;
   								  			foundEmployee.save (function (err, savedEmployee) {
@@ -272,7 +273,23 @@ Purchase.prototype = {
   								  			}		
   								  						
   								  			else {
-  								  				res.send(200, newPurchase);
+                            //save item record
+                            console.log("saving purchase: " + newPurchase)
+                            foundItem.purchases.push(newPurchase);
+                            foundItem.save (function (err, savedItem) {
+                              if (err) {
+                                excep.source = functionName + " line: " + stack[0].line;
+                                excep.error = err;
+                                excep.save (function (err, newException) {
+                                res.send(400, newException);
+                                })
+                              }
+                              
+                              else
+                              {
+                                res.send(200, newPurchase);
+                              }
+                            });
   								
   								  			}
 

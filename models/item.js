@@ -24,7 +24,8 @@ var ItemSchema = new Schema ({
 	kosher : Boolean,
 	vegan : Boolean,
 	ratings : [ItemRatingSchema],
-	imageUri : String
+	imageUri : String,
+	purchases : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase'}]
 });
 
 module.exports = mongoose.model("ItemRating", ItemRatingSchema);
