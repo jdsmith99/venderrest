@@ -4,7 +4,7 @@ var mongoose = require("mongoose"),
 	account = require("../models/account.js"),
 	item = require("../models/item.js"),
   exception = require("../models/exception.js"),
-  traceback = require('traceback');
+  traceback = require("traceback");
 
 module.exports = Purchase;
 
@@ -94,21 +94,27 @@ Purchase.prototype = {
   },
 
 	add: function (req, res) {
+
+
 		var parmEmployee = req.body.account;
 		var newEmployee = new account(parmEmployee);
 		var parmItem = req.body.item;
-		var newItem = new item(parmItem);
+  	var newItem = new item(parmItem);
     var excep = new exception();
     var itemQueryParam;
 
-    var stack = traceback();
-    var functionName = stack[0].name;
+ 
+    //var stack = traceback();
+    console.log("adding Purchase");
+    var functionName = "Purchase:add";
 
     //if an item code is passed, use that for lookup. otherwise, use the item's id
 
+ 
     if (!parmItem)
     {
-      excep.source = functionName + " line: " + stack[0].line;
+      //excep.source = functionName + " line: " + stack[0].line;
+      excep.source = functionName + " line: " + 117;
       excep.descripton = "Must include valid Item entity.";
       excep.save (function (err, newException) {
         res.send(403, {exception: newException._id});
@@ -118,7 +124,8 @@ Purchase.prototype = {
     }
     else if (!parmItem.code && ! parmItem._id)
     {
-      excep.source = functionName + " line: " + stack[0].line;
+      //excep.source = functionName + " line: " + stack[0].line;
+      excep.source = functionName + " line: " + 128;
       excep.descripton = "Must include valid Item id or Item code.";
       excep.save (function (err, newException) {
       res.send(403, {exception: newException._id});
@@ -127,7 +134,6 @@ Purchase.prototype = {
     }
     else
     {
-      //console.log(itemQueryParam);
   		// find item
       var query;
       if(parmItem.code)
@@ -144,7 +150,8 @@ Purchase.prototype = {
         console.log("found Items: " + foundItems);
 
   			if (err) {
-            excep.source = functionName + " line: " + stack[0].line;
+            //excep.source = functionName + " line: " + stack[0].line;
+            excep.source = functionName + " line: " + 154;
             excep.error = err;
             excep.save (function (err, newException) {
               res.send(403, newException);
@@ -152,7 +159,8 @@ Purchase.prototype = {
   			}
         else if (foundItems.length != 1) {
             excep.description = "Invalid item or more than one Item matches code/Id.";
-            excep.source = functionName + " line: " + stack[0].line;
+            //excep.source = functionName + " line: " + stack[0].line;
+            excep.source = functionName + " line: " + 163;
             excep.save (function (err, newException) {
               if (err){
 
@@ -173,8 +181,9 @@ Purchase.prototype = {
           if(!parmEmployee)
           {
 
-            stack = traceback();
-            excep.source = functionName + " line: " + stack[0].line;
+            //stack = traceback();
+            //excep.source = functionName + " line: " + stack[0].line;
+            excep.source = functionName + " line: " + 186;
             excep.description = "Must include an account entity.";
             excep.save (function (err, newException) {
               if(err)
@@ -194,7 +203,8 @@ Purchase.prototype = {
   				account.findOne ({ _id : parmEmployee._id, isActive : 'yes'},  function (err, foundEmployee) {
   				if (err) {
             // save exception
-            excep.source = functionName + " line: " + stack[0].line;
+            //excep.source = functionName + " line: " + stack[0].line;
+            excep.source = functionName + " line: " + 207;
             excep.error = err;
             excep.save (function (err, newException) {
               res.send(400, newException);
@@ -203,7 +213,8 @@ Purchase.prototype = {
   				}
           else if(!foundEmployee){
             excep.description = "Invalid employee or employee not active: " + parmEmployee._id;
-            excep.source = functionName + " line: " + stack[0].line;
+            //excep.source = functionName + " line: " + stack[0].line;
+            excep.source = functionName + " line: " + 217;
             excep.save (function (err, newException) {
               res.send(400, newException);
             });
@@ -225,7 +236,8 @@ Purchase.prototype = {
   						purchase.count({account: foundEmployee, purchaseDate: {$lte : topDateRange}, purchaseDate: {$gte: botDateRange}}, function (err, count) {
   						//purchase.count({employee: foundEmployee}, function (err, count) {
   							if(err) {
-  								excep.source = functionName + " line: " + stack[0].line;
+                  //excep.source = functionName + " line: " + stack[0].line;
+  								excep.source = functionName + " line: " + 240;
                   excep.error = err;
                   excep.save (function (err, newException) {
                     res.send(400, newException);
@@ -236,7 +248,8 @@ Purchase.prototype = {
   							if (count >= foundEmployee.dailyLimit) {
 
                   excep.description = "Purchases exceeded daily limit.";
-                  excep.source = functionName + " line: " + stack[0].line;
+                  //excep.source = functionName + " line: " + stack[0].line;
+                  excep.source = functionName + " line: " + 252;
                   excep.save (function (err, newException) {
                     res.send(403, newException);
                     //save to employee
@@ -251,9 +264,11 @@ Purchase.prototype = {
   									newPurchase.account = foundEmployee._id;
   									newPurchase.item = foundItem._id;
   									newPurchase.amount = foundItem.cost;
+                    newPurchase.code = foundItem.code;
   									newPurchase.save(function (err, newPurchase) {
   									  	if (err) {
-                          excep.source = functionName + " line: " + stack[0].line;
+                          //excep.source = functionName + " line: " + stack[0].line;
+                          excep.source = functionName + " line: " + 271;
                           excep.error = err;
                           excep.save (function (err, newException) {
                             res.send(400, newException);
@@ -265,7 +280,8 @@ Purchase.prototype = {
   								  			foundEmployee.credits = foundEmployee.credits - foundItem.cost;
   								  			foundEmployee.save (function (err, savedEmployee) {
   								  			if(err) {
-  								  				excep.source = functionName + " line: " + stack[0].line;
+                            //excep.source = functionName + " line: " + stack[0].line;
+  								  				excep.source = functionName + " line: " + 284;
                             excep.error = err;
                             excep.save (function (err, newException) {
                               res.send(400, newException);
@@ -278,7 +294,8 @@ Purchase.prototype = {
                             foundItem.purchases.push(newPurchase);
                             foundItem.save (function (err, savedItem) {
                               if (err) {
-                                excep.source = functionName + " line: " + stack[0].line;
+                                //excep.source = functionName + " line: " + stack[0].line;
+                                excep.source = functionName + " line: " + 298;
                                 excep.error = err;
                                 excep.save (function (err, newException) {
                                 res.send(400, newException);
@@ -307,7 +324,8 @@ Purchase.prototype = {
 
   						// log exception
               excep.description = "Not enough credits for purchase: " + newItem._id;
-              excep.source = functionName + " line: " + stack[0].line;
+              //excep.source = functionName + " line: " + stack[0].line;
+              excep.source = functionName + " line: " + 328;
               excep.save (function (err, newException) {
                 res.send(406, newException);
                 //save to employee
